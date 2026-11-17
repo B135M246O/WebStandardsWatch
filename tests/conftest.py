@@ -1,4 +1,4 @@
 try:
-    import pep_parse
+    import standards_watch
 except ModuleNotFoundError:
-    raise AssertionError('Назовите проект `pep_parse`')
+    raise AssertionError('Назовите проект `standards_watch`')

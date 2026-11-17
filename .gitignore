@@ -142,3 +142,9 @@ dmypy.json
 
 # Local History for Visual Studio Code
 .history/
+
+.venv/
+install.log
+.scrapy/
+crawl.log
+compatibility-install.log

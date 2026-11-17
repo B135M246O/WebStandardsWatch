@@ -1,11 +1,11 @@
 from pathlib import Path
 
 try:
-    from pep_parse.settings import FEEDS, ITEM_PIPELINES
+    from standards_watch.settings import FEEDS, ITEM_PIPELINES
 except ModuleNotFoundError as exc:
     raise AssertionError(
         'Не найден файл `settings.py` по пути '
-        f'`pep_parse.{exc.name.split(".")[0]}`',
+        f'`standards_watch.{exc.name.split(".")[0]}`',
     )
 except ImportError as exc:
     raise AssertionError(
@@ -31,15 +31,15 @@ def test_settings_feeds():
         'Убедитесь, что в ключе словаря `FEEDS` перед именем файла указан '
         'путь к директории `results/`'
     )
-    assert splited_path[1] == 'pep_%(time)s.csv', (
-        'В имени файла с перечнем PEP должен быть префикс pep_ '
+    assert splited_path[1] == 'standards_%(time)s.csv', (
+        'В имени файла с перечнем документов W3C должен быть префикс standards_ '
         'и подстановка даты `%(time)s`'
     )
     path_key = list(FEEDS.keys())[0]
     fields_format_keys = FEEDS.get(path_key)
-    assert fields_format_keys.get('fields') == ['number', 'name', 'status'], (
+    assert fields_format_keys.get('fields') == ['identifier', 'name', 'status', 'url', 'published'], (
         'Убедитесь, что в FEEDS есть все необходимые поля: '
-        '`number, name, status`'
+        '`identifier, name, status, url, published`'
     )
     assert fields_format_keys.get('format') == 'csv', (
         'Проверьте формат вывода файла в FEEDS'
@@ -57,10 +57,10 @@ def test_item_pipelines():
     assert len(item_pipelines) == 1, (
         'В `ITEM_PIPELINES` необходимо объявить 1 ключ с именем пайплайна.'
     )
-    assert item_pipelines[0] == 'pep_parse.pipelines.PepParsePipeline', (
+    assert item_pipelines[0] == 'standards_watch.pipelines.StatusSummaryPipeline', (
         'Ключом пайплайна в настройках `ITEM_PIPELINES` должен быть класс.'
     )
-    assert ITEM_PIPELINES['pep_parse.pipelines.PepParsePipeline'] in range(1000), (
-        'В качестве значения для ключа `pep_parse.pipelines.PepParsePipeline` '
+    assert ITEM_PIPELINES['standards_watch.pipelines.StatusSummaryPipeline'] in range(1000), (
+        'В качестве значения для ключа `standards_watch.pipelines.StatusSummaryPipeline` '
         'в настройках укажите значение из диапазона от `0` и до `1000`'
     )
